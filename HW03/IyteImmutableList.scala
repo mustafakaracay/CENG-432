@@ -1,26 +1,29 @@
-//Elnura Arslan
-//180201039
+abstract class IyteImmutableList {
+	def head:Int
+	def tail:IyteImmutableList
+	def add(x:Int):IyteImmutableList
+}
 
+class TempIyteImmutableList (override val head:Int,override val tail:IyteImmutableList) extends IyteImmutableList{
+	override def add(x:Int): IyteImmutableList = {
+		new TempIyteImmutableList(x,this)
+	}
 
-class IyteImmutableList(val head: Int, val tail: MyImmutableList) extends MyImmutableList {
-  override def toString: String = head + " " + tail
+  override def toString:String={
+		
+		var result:String =""
+		result= head + ", " + tail
+		result
+	}
 }
-abstract class MyImmutableList {
-  def head: Int
-  def tail: MyImmutableList
-  def add(item: Int): MyImmutableList = new IyteImmutableList(item, this)
+
+object Nil extends IyteImmutableList {
+	override def head: Int = throw new Exception("Empty List")
+	override def tail: IyteImmutableList = throw new Exception("Empty List")
+	override def add(x: Int): IyteImmutableList =new  TempIyteImmutableList(x,Nil)
+	override def toString =  ""
 }
-object MyImmutableListNil extends MyImmutableList {
-  def head: Nothing = throw new Exception("empty list -> head")
-  def tail: MyImmutableList = throw new Exception("empty list -> tail")
-  override def toString =  ""
-}
-object IyteImmutableList {
-  def apply(items: Int*): MyImmutableList = {
-    var list: MyImmutableList = MyImmutableListNil.asInstanceOf[MyImmutableList]
-    for (element <- 0 until items.length reverse) //reverse to add on list serially
-      //list.add(items(element))
-      list = list.add(items(element) )
-    list
-  }
+
+object  IyteImmutableList{
+	def apply(): IyteImmutableList = Nil
 }
